@@ -1,6 +1,7 @@
 import graphene
 from django.core.exceptions import ValidationError
 from django.core.files import File
+from security import safe_requests
 
 from .....core.utils.validators import get_oembed_data
 from .....permission.enums import ProductPermissions
@@ -15,7 +16,6 @@ from ....core.types import BaseInputObjectType, ProductError, Upload
 from ....core.validators.file import clean_image_file, is_image_url, validate_image_url
 from ....plugins.dataloaders import get_plugin_manager_promise
 from ...types import Product, ProductMedia
-from security import safe_requests
 
 
 class ProductMediaCreateInput(BaseInputObjectType):

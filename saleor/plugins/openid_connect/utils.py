@@ -14,6 +14,7 @@ from django.core.validators import URLValidator
 from django.db.models import QuerySet
 from django.utils.timezone import make_aware
 from jwt import PyJWTError
+from security import safe_requests
 
 from ...account.models import Group, User
 from ...account.utils import get_user_groups_permissions
@@ -38,7 +39,6 @@ from ..models import PluginConfiguration
 from . import PLUGIN_ID
 from .const import SALEOR_STAFF_PERMISSION
 from .exceptions import AuthenticationError
-from security import safe_requests
 
 if TYPE_CHECKING:
     from .dataclasses import OpenIDConnectConfig

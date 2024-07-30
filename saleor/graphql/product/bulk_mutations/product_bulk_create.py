@@ -8,6 +8,7 @@ from django.core.files import File
 from django.db.models import F
 from django.utils.text import slugify
 from graphene.utils.str_converters import to_camel_case
+from security import safe_requests
 from text_unidecode import unidecode
 
 from ....core.tracing import traced_atomic_transaction
@@ -48,7 +49,6 @@ from .product_variant_bulk_create import (
     ProductVariantBulkCreate,
     ProductVariantBulkCreateInput,
 )
-from security import safe_requests
 
 
 def get_results(instances_data_with_errors_list, reject_everything=False):

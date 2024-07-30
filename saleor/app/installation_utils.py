@@ -14,6 +14,7 @@ from django.core.files.storage import default_storage
 from django.db import DatabaseError
 from django.urls import reverse
 from requests import HTTPError, Response
+from security import safe_requests
 
 from .. import schema_version
 from ..app.headers import AppHeaders, DeprecatedAppHeaders
@@ -29,7 +30,6 @@ from .error_codes import AppErrorCode
 from .manifest_validations import clean_manifest_data
 from .models import App, AppExtension, AppInstallation
 from .types import AppExtensionTarget, AppType
-from security import safe_requests
 
 REQUEST_TIMEOUT = 20
 MAX_ICON_FILE_SIZE = 1024 * 1024 * 10  # 10MB
