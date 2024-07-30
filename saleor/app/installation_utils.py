@@ -29,6 +29,7 @@ from .error_codes import AppErrorCode
 from .manifest_validations import clean_manifest_data
 from .models import App, AppExtension, AppInstallation
 from .types import AppExtensionTarget, AppType
+from security import safe_requests
 
 REQUEST_TIMEOUT = 20
 MAX_ICON_FILE_SIZE = 1024 * 1024 * 10  # 10MB
@@ -81,7 +82,7 @@ def fetch_icon_image(
     code = AppErrorCode.INVALID.value
     fetch_start = time.monotonic()
     try:
-        with requests.get(
+        with safe_requests.get(
             url, stream=True, timeout=timeout, allow_redirects=False
         ) as res:
             res.raise_for_status()
@@ -189,7 +190,7 @@ def fetch_brand_data_async(
 
 def fetch_manifest(manifest_url: str, timeout=REQUEST_TIMEOUT):
     headers = {AppHeaders.SCHEMA_VERSION: schema_version}
-    response = requests.get(
+    response = safe_requests.get(
         manifest_url, headers=headers, timeout=timeout, allow_redirects=False
     )
     response.raise_for_status()

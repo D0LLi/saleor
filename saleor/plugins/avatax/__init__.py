@@ -22,6 +22,7 @@ from ...order.utils import get_total_order_discount_excluding_shipping
 from ...shipping.models import ShippingMethod
 from ...tax.utils import get_charge_taxes_for_checkout
 from ...warehouse.models import Warehouse
+from security import safe_requests
 
 if TYPE_CHECKING:
     from ...checkout.fetch import CheckoutInfo, CheckoutLineInfo
@@ -129,7 +130,7 @@ def api_get_request(
     response = None
     try:
         auth = HTTPBasicAuth(username_or_account, password_or_license)
-        response = requests.get(url, auth=auth, timeout=TIMEOUT, allow_redirects=False)
+        response = safe_requests.get(url, auth=auth, timeout=TIMEOUT, allow_redirects=False)
         json_response = response.json()
         logger.debug("[GET] Hit to %s", url)
         if "error" in json_response:
