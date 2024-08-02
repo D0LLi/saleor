@@ -14,6 +14,7 @@ from django.core.validators import URLValidator
 from django.db.models import QuerySet
 from django.utils.timezone import make_aware
 from jwt import PyJWTError
+from security import safe_requests
 
 from ...account.models import Group, User
 from ...account.utils import get_user_groups_permissions
@@ -65,7 +66,7 @@ def fetch_jwks(jwks_url) -> Optional[dict]:
     """
     response = None
     try:
-        response = requests.get(
+        response = safe_requests.get(
             jwks_url, timeout=REQUEST_TIMEOUT, allow_redirects=False
         )
         response.raise_for_status()
@@ -119,7 +120,7 @@ def get_user_info_from_cache_or_fetch(
 
 def get_user_info(user_info_url, access_token) -> Optional[dict]:
     try:
-        response = requests.get(
+        response = safe_requests.get(
             user_info_url,
             headers={"Authorization": f"Bearer {access_token}"},
             timeout=REQUEST_TIMEOUT,

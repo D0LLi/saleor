@@ -1,7 +1,7 @@
 import graphene
-import requests
 from django.core.exceptions import ValidationError
 from django.core.files import File
+from security import safe_requests
 
 from .....core.utils.validators import get_oembed_data
 from .....permission.enums import ProductPermissions
@@ -110,7 +110,7 @@ class ProductMediaCreate(BaseMutation):
                     media_url, "media_url", ProductErrorCode.INVALID.value
                 )
                 filename = get_filename_from_url(media_url)
-                image_data = requests.get(
+                image_data = safe_requests.get(
                     media_url, stream=True, timeout=30, allow_redirects=False
                 )
                 image_file = File(image_data.raw, filename)

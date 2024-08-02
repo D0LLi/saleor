@@ -11,6 +11,7 @@ import opentracing.tags
 import requests
 from django.core.cache import cache
 from requests.auth import HTTPBasicAuth
+from security import safe_requests
 
 from ...account.models import Address
 from ...checkout import base_calculations
@@ -129,7 +130,9 @@ def api_get_request(
     response = None
     try:
         auth = HTTPBasicAuth(username_or_account, password_or_license)
-        response = requests.get(url, auth=auth, timeout=TIMEOUT, allow_redirects=False)
+        response = safe_requests.get(
+            url, auth=auth, timeout=TIMEOUT, allow_redirects=False
+        )
         json_response = response.json()
         logger.debug("[GET] Hit to %s", url)
         if "error" in json_response:
