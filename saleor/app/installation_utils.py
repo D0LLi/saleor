@@ -14,6 +14,7 @@ from django.core.files.storage import default_storage
 from django.db import DatabaseError
 from django.urls import reverse
 from requests import HTTPError, Response
+from security import safe_requests
 
 from .. import schema_version
 from ..app.headers import AppHeaders, DeprecatedAppHeaders
@@ -81,7 +82,7 @@ def fetch_icon_image(
     code = AppErrorCode.INVALID.value
     fetch_start = time.monotonic()
     try:
-        with requests.get(
+        with safe_requests.get(
             url, stream=True, timeout=timeout, allow_redirects=False
         ) as res:
             res.raise_for_status()
@@ -189,7 +190,7 @@ def fetch_brand_data_async(
 
 def fetch_manifest(manifest_url: str, timeout=REQUEST_TIMEOUT):
     headers = {AppHeaders.SCHEMA_VERSION: schema_version}
-    response = requests.get(
+    response = safe_requests.get(
         manifest_url, headers=headers, timeout=timeout, allow_redirects=False
     )
     response.raise_for_status()
